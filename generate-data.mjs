@@ -13,8 +13,8 @@ function createRandomCustomer(id) {
   return {
     id: id,
     username: userName,
-    firstname: firstName,
-    lastname: lastName.replace("'", "''"),
+    firstName: firstName,
+    lastName: lastName.replace("'", "''"),
     phone: faker.string.numeric(10),
     email: userName + '@example.com',
     address: faker.location.streetAddress().replace("'", "''"),
@@ -34,8 +34,8 @@ function createRandomCompany(id) {
 
   return {
     id: id,
-    code: companyCode,
-    name: companyName,
+    companyCode: companyCode,
+    companyName: companyName,
     address: faker.location.streetAddress().replace("'", "''"),
     city: faker.location.city().replace("'", "''"),
     state: faker.location.state({ abbreviated: true }),
@@ -48,16 +48,28 @@ function createRandomCompany(id) {
 function createRandomProduct(id) {
   return {
     id: id,
-    partnbr: faker.commerce.isbn(),
+    productNumber: faker.commerce.isbn(),
     name: faker.commerce.productName(),
     price: faker.commerce.price({ min: 5, max: 100 }),
     unit: faker.helpers.arrayElement(productUnits),
-    // photopath: faker.image.urlLoremFlickr({
-    //   category: 'product',
-    //   width: 100,
-    //   height: 200,
-    // }),
-    companyid: faker.helpers.rangeToNumber({ min: 1, max: 50 }),
+    companyId: faker.helpers.rangeToNumber({ min: 1, max: 50 }),
+  };
+}
+
+function createRandomOrder(id) {
+  return {
+    id: id,
+    customerId: faker.helpers.rangeToNumber({ min: 1, max: 50 }),
+    orderDate: faker.date.recent(),
+    deliveryDate: faker.date.soon(),
+  };
+}
+
+function createRandomOrderItem(id) {
+  return {
+    id: id,
+    productId: faker.helpers.rangeToNumber({ min: 1, max: 50 }),
+    quantity: faker.helpers.rangeToNumber({ min: 1, max: 3 }),
   };
 }
 
@@ -74,6 +86,8 @@ let db = {
   customers: [],
   companies: [],
   products: [],
+  orders: [],
+  orderItems: [],
 };
 
 //Users
@@ -94,10 +108,27 @@ while (counter <= 50) {
   counter++;
 }
 
+//Products
 counter = 1;
 while (counter <= 50) {
   const product = createRandomProduct(counter);
   db.products.push(product);
+  counter++;
+}
+
+//Orders
+counter = 1;
+while (counter <= 50) {
+  const order = createRandomOrder(counter);
+  db.orders.push(order);
+  counter++;
+}
+
+//Order Items
+counter = 1;
+while (counter <= 50) {
+  const orderItem = createRandomOrderItem(counter);
+  db.orderItems.push(orderItem);
   counter++;
 }
 
