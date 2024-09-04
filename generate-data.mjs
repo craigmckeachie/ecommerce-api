@@ -56,12 +56,23 @@ function createRandomProduct(id) {
   };
 }
 
+Date.prototype.addDays = function (days) {
+  var date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+};
+
 function createRandomOrder(id) {
+  let orderDate = faker.date.recent({ days: 90 });
+  let deliveryDate = orderDate.addDays(
+    faker.helpers.rangeToNumber({ min: 1, max: 7 })
+  );
+
   return {
     id: id,
     customerId: faker.helpers.rangeToNumber({ min: 1, max: 50 }),
-    orderDate: faker.date.recent(),
-    deliveryDate: faker.date.soon(),
+    orderDate,
+    deliveryDate,
   };
 }
 
